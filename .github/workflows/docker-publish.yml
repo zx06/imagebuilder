@@ -25,3 +25,11 @@ jobs:
           context: ./frps
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/frps:latest
+
+      -
+        name: Build and push centos7-py37
+        uses: docker/build-push-action@v3
+        with:
+          context: ./python
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-py37:latest
