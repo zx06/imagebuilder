@@ -5,9 +5,11 @@ ENV DASH_PWD=admin
 ENV TOKEN=20220802
 ENV ALLOW_PORTS=52000-52100
 
+ENV TZ=Asia/Shanghai
+
 WORKDIR /app
 # install envsubst
-RUN apk add --update gettext
+RUN apk add --update --no-cache gettext tzdata
 # install frps
 RUN wget https://github.com/fatedier/frp/releases/download/v0.44.0/frp_0.44.0_linux_amd64.tar.gz -O frp_0.44.0_linux_amd64.tar.gz && \
     tar -xzf frp_0.44.0_linux_amd64.tar.gz && \
