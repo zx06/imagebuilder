@@ -32,4 +32,4 @@ jobs:
         with:
           context: ./python
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-py37:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-py37:$(date +'%Y%m%d')

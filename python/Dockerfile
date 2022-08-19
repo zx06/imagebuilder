@@ -46,7 +46,9 @@ RUN set -ex \
     && ln -s /usr/local/bin/python3.7 /usr/local/bin/python3 \
     && ln -s /usr/local/bin/pip3.7 /usr/local/bin/pip3 \
     # # update pip
-    && pip3 install --upgrade pip
+    && pip3 install --upgrade pip \
+    # install pdm
+    && curl -sSL https://raw.githubusercontent.com/pdm-project/pdm/main/install-pdm.py | python3 -
 
 
 
