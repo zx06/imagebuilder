@@ -32,3 +32,10 @@ jobs:
           context: ./python
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-py37:${{ steps.date.outputs.date }}
+      - name: Build and push centos7-python3.8
+        uses: docker/build-push-action@v3
+        with:
+          context: ./python
+          file: ./python/Dockerfile.centos7-python3.8
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-python3.8:${{ steps.date.outputs.date }}
