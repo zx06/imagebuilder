@@ -12,23 +12,42 @@ jobs:
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y%m%d')"
+
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
       - name: Build and push frps
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ./frps
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/frps:latest
-
-      - name: Build and push centos7-py37
-        uses: docker/build-push-action@v3
+          
+      - name: Build and push baseimage
+        uses: docker/build-push-action@v4
         with:
-          context: ./python
+          context: ./baseimage
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-py37:${{ steps.date.outputs.date }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/baseimage:${{ steps.date.outputs.date }}
+
+      # - name: Build and push centos7-py37
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: ./python
+      #     push: true
+      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-py37:${{ steps.date.outputs.date }}
+
+      # - name: Build and push centos7-python3.8
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: ./python
+      #     file: ./python/Dockerfile.centos7-python3.8
+      #     push: true
+      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-python3.8:${{ steps.date.outputs.date }}
+
