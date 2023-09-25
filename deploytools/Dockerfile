@@ -8,6 +8,6 @@ RUN apk add --no-cache \
     jq \
     openssh-client \
     gettext \
-    kubectl \
+    kubectl@testing \
     docker-cli \    
     && rm -rf /var/cache/apk/*
