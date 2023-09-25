@@ -35,6 +35,13 @@ jobs:
           context: ./baseimage
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/baseimage:${{ steps.date.outputs.date }}
+      
+      - name: Build and push deploytools
+        uses: docker/build-push-action@v4
+        with:
+          context: ./deploytools
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/deploytools:${{ steps.date.outputs.date }}
 
       # - name: Build and push centos7-py37
       #   uses: docker/build-push-action@v4
