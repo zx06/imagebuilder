@@ -43,6 +43,13 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/deploytools:${{ steps.date.outputs.date }}
 
+      - name: Build and push debian-with-utils
+        uses: docker/build-push-action@v4
+        with:
+          context: ./debian-with-utils
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/debian-with-utils:${{ steps.date.outputs.date }}
+
       # - name: Build and push centos7-py37
       #   uses: docker/build-push-action@v4
       #   with:
