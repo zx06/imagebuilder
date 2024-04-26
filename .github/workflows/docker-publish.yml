@@ -78,6 +78,16 @@ jobs:
             ghcr.io/zx06/debian-with-utils:${{ steps.date.outputs.date }}
             ${{ secrets.DOCKERHUB_USERNAME }}/debian-with-utils:${{ steps.date.outputs.date }}
 
+      - name: Build and push debug-tools
+        uses: docker/build-push-action@v5
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ./debug-tools
+          push: true
+          tags: |
+            ghcr.io/zx06/debug-tools:${{ steps.date.outputs.date }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/debug-tools:${{ steps.date.outputs.date }}
+
       # - name: Build and push centos7-py37
       #   uses: docker/build-push-action@v5
       #   with:
