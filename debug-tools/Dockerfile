@@ -12,3 +12,5 @@ RUN apk add --no-cache \
     go \
     tar \
     && rm -rf /var/cache/apk/*
+
+CMD ["bash"]
