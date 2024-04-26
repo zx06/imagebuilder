@@ -17,6 +17,21 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
+      
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            baseimage:
+              - 'baseimage/**'
+            frps:
+              - 'frps/**'
+            deploytools:
+              - 'deploytools/**'
+            debian-with-utils:
+              - 'debian-with-utils/**'
+            debug-tools:
+              - 'debug-tools/**'
         
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -35,8 +50,20 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push baseimage
+        if: steps.filter.outputs.baseimage == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ./baseimage
+          push: true
+          tags: |
+            ghcr.io/zx06/baseimage:${{ steps.date.outputs.date }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/baseimage:${{ steps.date.outputs.date }}
           
       - name: Build and push frps
+        if: steps.filter.outputs.frps == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -48,17 +75,8 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/frps:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/frps:${{ steps.date.outputs.date }}
           
-      - name: Build and push baseimage
-        uses: docker/build-push-action@v5
-        with:
-          platforms: linux/amd64,linux/arm64
-          context: ./baseimage
-          push: true
-          tags: |
-            ghcr.io/zx06/baseimage:${{ steps.date.outputs.date }}
-            ${{ secrets.DOCKERHUB_USERNAME }}/baseimage:${{ steps.date.outputs.date }}
-      
       - name: Build and push deploytools
+        if: steps.filter.outputs.deploytools == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -69,6 +87,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/deploytools:${{ steps.date.outputs.date }}
 
       - name: Build and push debian-with-utils
+        if: steps.filter.outputs.debian-with-utils == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -79,6 +98,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/debian-with-utils:${{ steps.date.outputs.date }}
 
       - name: Build and push debug-tools
+        if: steps.filter.outputs.debug-tools == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
