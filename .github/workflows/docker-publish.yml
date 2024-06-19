@@ -32,6 +32,8 @@ jobs:
               - 'debian-with-utils/**'
             debug-tools:
               - 'debug-tools/**'
+            golang:
+              - 'golang/**'
         
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -107,7 +109,15 @@ jobs:
           tags: |
             ghcr.io/zx06/debug-tools:${{ steps.date.outputs.date }}
             ${{ secrets.DOCKERHUB_USERNAME }}/debug-tools:${{ steps.date.outputs.date }}
-
+      - name: golang mirror
+        if: steps.filter.outputs.golang == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ./golang
+          push: true
+          tags: |
+            ghcr.io/zx06/golang:1.22
       # - name: Build and push centos7-py37
       #   uses: docker/build-push-action@v5
       #   with:
