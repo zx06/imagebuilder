@@ -10,6 +10,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+    env:
+      BASE_DIR: './.github/workflows/tasks/tasks'
     steps:
       - name: Get current date
         id: date
@@ -23,17 +25,17 @@ jobs:
         with:
           filters: |
             baseimage:
-              - 'baseimage/**'
+              - '${{ BASE_DIR }}/baseimage/**'
             frps:
-              - 'frps/**'
+              - '${{ BASE_DIR }}/frps/**'
             deploytools:
-              - 'deploytools/**'
+              - '${{ BASE_DIR }}/deploytools/**'
             debian-with-utils:
-              - 'debian-with-utils/**'
+              - '${{ BASE_DIR }}/debian-with-utils/**'
             debug-tools:
-              - 'debug-tools/**'
+              - '${{ BASE_DIR }}/debug-tools/**'
             golang:
-              - 'golang/**'
+              - '${{ BASE_DIR }}/golang/**'
         
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -58,7 +60,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
-          context: ./baseimage
+          context: ${{ BASE_DIR }}/baseimage
           push: true
           tags: |
             ghcr.io/zx06/baseimage:${{ steps.date.outputs.date }}
@@ -69,7 +71,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
-          context: ./frps
+          context: ${{ BASE_DIR }}/frps
           push: true
           tags: |
             ghcr.io/zx06/frps:latest
@@ -82,7 +84,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
-          context: ./deploytools
+          context: ${{ BASE_DIR }}/deploytools
           push: true
           tags: |
             ghcr.io/zx06/deploytools:${{ steps.date.outputs.date }}
@@ -93,7 +95,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
-          context: ./debian-with-utils
+          context: ${{ BASE_DIR }}/debian-with-utils
           push: true
           tags: |
             ghcr.io/zx06/debian-with-utils:${{ steps.date.outputs.date }}
@@ -104,7 +106,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
-          context: ./debug-tools
+          context: ${{ BASE_DIR }}/debug-tools
           push: true
           tags: |
             ghcr.io/zx06/debug-tools:${{ steps.date.outputs.date }}
@@ -114,21 +116,21 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
-          context: ./golang
+          context: ${{ BASE_DIR }}/golang
           push: true
           tags: |
             ghcr.io/zx06/golang:1.22
       # - name: Build and push centos7-py37
       #   uses: docker/build-push-action@v5
       #   with:
-      #     context: ./python
+      #     context: ${{ BASE_DIR }}/python
       #     push: true
       #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-py37:${{ steps.date.outputs.date }}
 
       # - name: Build and push centos7-python3.8
       #   uses: docker/build-push-action@v5
       #   with:
-      #     context: ./python
+      #     context: ${{ BASE_DIR }}/python
       #     file: ./python/Dockerfile.centos7-python3.8
       #     push: true
       #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-python3.8:${{ steps.date.outputs.date }}
