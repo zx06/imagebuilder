@@ -6,7 +6,7 @@ on:
 
 jobs:
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     permissions:
       contents: read
       packages: write
@@ -20,24 +20,24 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       
-      - uses: dorny/paths-filter@v3
-        id: filter
-        with:
-          filters: |
-            baseimage:
-              - '${{ env.BASE_DIR }}/baseimage/**'
-            frps:
-              - '${{ env.BASE_DIR }}/frps/**'
-            deploytools:
-              - '${{ env.BASE_DIR }}/deploytools/**'
-            debian-with-utils:
-              - '${{ env.BASE_DIR }}/debian-with-utils/**'
-            debug-tools:
-              - '${{ env.BASE_DIR }}/debug-tools/**'
-            golang:
-              - '${{ env.BASE_DIR }}/golang/**'
-            sonar-scanner-cli:
-              - '${{ env.BASE_DIR }}/sonar-scanner-cli/**'
+      # - uses: dorny/paths-filter@v3
+      #   id: filter
+      #   with:
+      #     filters: |
+      #       baseimage:
+      #         - '${{ env.BASE_DIR }}/baseimage/**'
+      #       frps:
+      #         - '${{ env.BASE_DIR }}/frps/**'
+      #       deploytools:
+      #         - '${{ env.BASE_DIR }}/deploytools/**'
+      #       debian-with-utils:
+      #         - '${{ env.BASE_DIR }}/debian-with-utils/**'
+      #       debug-tools:
+      #         - '${{ env.BASE_DIR }}/debug-tools/**'
+      #       golang:
+      #         - '${{ env.BASE_DIR }}/golang/**'
+      #       sonar-scanner-cli:
+      #         - '${{ env.BASE_DIR }}/sonar-scanner-cli/**'
         
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -58,7 +58,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push baseimage
-        if: steps.filter.outputs.baseimage == 'true'
+        # if: steps.filter.outputs.baseimage == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -69,7 +69,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/baseimage:${{ steps.date.outputs.date }}
           
       - name: Build and push frps
-        if: steps.filter.outputs.frps == 'true'
+        # if: steps.filter.outputs.frps == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -82,7 +82,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/frps:${{ steps.date.outputs.date }}
           
       - name: Build and push deploytools
-        if: steps.filter.outputs.deploytools == 'true'
+        # if: steps.filter.outputs.deploytools == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -93,7 +93,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/deploytools:${{ steps.date.outputs.date }}
 
       - name: Build and push debian-with-utils
-        if: steps.filter.outputs.debian-with-utils == 'true'
+        # if: steps.filter.outputs.debian-with-utils == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -104,7 +104,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/debian-with-utils:${{ steps.date.outputs.date }}
 
       - name: Build and push debug-tools
-        if: steps.filter.outputs.debug-tools == 'true'
+        # if: steps.filter.outputs.debug-tools == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -114,7 +114,7 @@ jobs:
             ghcr.io/zx06/debug-tools:${{ steps.date.outputs.date }}
             ${{ secrets.DOCKERHUB_USERNAME }}/debug-tools:${{ steps.date.outputs.date }}
       - name: golang mirror
-        if: steps.filter.outputs.golang == 'true'
+        # if: steps.filter.outputs.golang == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
@@ -123,7 +123,7 @@ jobs:
           tags: |
             ghcr.io/zx06/golang:1.22
       - name: sonar-scanner-cli mirror
-        if: steps.filter.outputs.sonar-scanner-cli == 'true'
+        # if: steps.filter.outputs.sonar-scanner-cli == 'true'
         uses: docker/build-push-action@v5
         with:
           platforms: linux/amd64,linux/arm64
