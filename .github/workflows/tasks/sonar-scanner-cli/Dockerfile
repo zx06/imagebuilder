@@ -1,1 +1,1 @@
-FROM sonarsource/sonar-scanner-cli:11
+FROM sonarsource/sonar-scanner-cli:11.1
