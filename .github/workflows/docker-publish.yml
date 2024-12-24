@@ -11,7 +11,7 @@ jobs:
       contents: read
       packages: write
     env:
-      BASE_DIR: '.github/workflows/tasks/tasks'
+      BASE_DIR: '.github/workflows/tasks'
     steps:
       - name: Get current date
         id: date
