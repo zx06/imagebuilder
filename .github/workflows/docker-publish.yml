@@ -113,6 +113,17 @@ jobs:
           tags: |
             ghcr.io/zx06/debug-tools:${{ steps.date.outputs.date }}
             ${{ secrets.DOCKERHUB_USERNAME }}/debug-tools:${{ steps.date.outputs.date }}
+      - name: Build and push poddebug
+        # if: steps.filter.outputs.debug-tools == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          platforms: linux/amd64
+          context: ${{ env.BASE_DIR }}/poddebug
+          push: true
+          tags: |
+            ghcr.io/zx06/poddebug:${{ steps.date.outputs.date }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/poddebug:${{ steps.date.outputs.date }}
+
       - name: golang mirror
         # if: steps.filter.outputs.golang == 'true'
         uses: docker/build-push-action@v5
