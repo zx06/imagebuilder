@@ -16,7 +16,7 @@ RUN apt update -qq && \
     jq \
     unzip \
     zip \
-    netcat \
+    netcat-traditional \
     iputils-ping \
     iproute2 \
     net-tools \
