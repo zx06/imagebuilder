@@ -39,4 +39,6 @@ RUN wget https://github.com/kubernetes-sigs/cri-tools/releases/download/${CRICTL
     tar zxvf crictl-${CRICTL_VERSION}-linux-amd64.tar.gz -C /usr/local/bin && \
     rm -f crictl-${CRICTL_VERSION}-linux-amd64.tar.gz
 
+COPY --chmod=755 attach.sh /root/attach.sh
+
 CMD [ "sleep", "infinity" ]
