@@ -56,7 +56,15 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
+      - name: mirror centos6
+        # if: steps.filter.outputs.baseimage == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          platforms: linux/amd64,linux/arm64
+          context: ${{ env.BASE_DIR }}/m/centos6
+          push: true
+          tags: |
+            ghcr.io/zx06/m/centos:6
       - name: Build and push baseimage
         # if: steps.filter.outputs.baseimage == 'true'
         uses: docker/build-push-action@v5
