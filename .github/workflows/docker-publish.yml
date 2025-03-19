@@ -11,7 +11,7 @@ jobs:
       contents: read
       packages: write
     env:
-      BASE_DIR: '.github/workflows/tasks'
+      BASE_DIR: ".github/workflows/tasks"
     steps:
       - name: Get current date
         id: date
@@ -19,7 +19,7 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       # - uses: dorny/paths-filter@v3
       #   id: filter
       #   with:
@@ -38,7 +38,7 @@ jobs:
       #         - '${{ env.BASE_DIR }}/golang/**'
       #       sonar-scanner-cli:
       #         - '${{ env.BASE_DIR }}/sonar-scanner-cli/**'
-        
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
@@ -49,7 +49,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      
+
       - name: Login to ghcr
         uses: docker/login-action@v3
         with:
@@ -67,7 +67,7 @@ jobs:
           tags: |
             ghcr.io/zx06/baseimage:${{ steps.date.outputs.date }}
             ${{ secrets.DOCKERHUB_USERNAME }}/baseimage:${{ steps.date.outputs.date }}
-          
+
       - name: Build and push frps
         # if: steps.filter.outputs.frps == 'true'
         uses: docker/build-push-action@v5
@@ -80,7 +80,7 @@ jobs:
             ghcr.io/zx06/frps:${{ steps.date.outputs.date }}
             ${{ secrets.DOCKERHUB_USERNAME }}/frps:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/frps:${{ steps.date.outputs.date }}
-          
+
       - name: Build and push deploytools
         # if: steps.filter.outputs.deploytools == 'true'
         uses: docker/build-push-action@v5
@@ -142,6 +142,15 @@ jobs:
           push: true
           tags: |
             ghcr.io/zx06/sonar-scanner-cli:11
+      - name: python27-centos6
+        # if: steps.filter.outputs.sonar-scanner-cli == 'true'
+        uses: docker/build-push-action@v5
+        with:
+          platforms: linux/amd64
+          context: ${{ env.BASE_DIR }}/python27-centos6
+          push: true
+          tags: |
+            ghcr.io/zx06/python27-centos6:${{ steps.date.outputs.date }}
       # - name: Build and push centos7-py37
       #   uses: docker/build-push-action@v5
       #   with:
@@ -156,4 +165,3 @@ jobs:
       #     file: ./python/Dockerfile.centos7-python3.8
       #     push: true
       #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/centos7-python3.8:${{ steps.date.outputs.date }}
-
