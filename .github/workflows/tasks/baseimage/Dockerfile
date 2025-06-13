@@ -3,6 +3,7 @@ FROM debian:bullseye
 RUN set -ex; \
 	apt-get update; \
 	apt-get install -y --no-install-recommends \
+ 	    libpopt0 \
 	    tzdata \
 	    locales \
 	    ca-certificates;
